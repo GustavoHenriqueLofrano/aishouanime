@@ -1,11 +1,11 @@
-import styles from './page.home.scss'
+import styles from './page.home.module.scss'
 import { Header } from './components/header'
 
 export default function Home() {
   
 
   return (
-    <main>
+    <main className={styles.container}>
       <div>
       <Header />
         <h1>Home</h1>

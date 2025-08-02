@@ -3,6 +3,7 @@
 
 import { cookies } from 'next/headers';
 import { api } from './api';
+import { AxiosError } from 'axios';
 
 export async function login(user: string, password: string) {
   try {
@@ -29,16 +30,16 @@ export async function login(user: string, password: string) {
     });
     
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError;
     console.error('Login error:', {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status
+      message: axiosError.message,
+      response: axiosError.response?.data,
+      status: axiosError.response?.status
     });
     
-    if (error.response?.status === 401) {
+    if (axiosError.response?.status === 401) {
       throw new Error('User or password invalid');
     }
-    
   }
 }

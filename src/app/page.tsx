@@ -70,7 +70,7 @@ export default function LoginPage() {
             Login
           </button>
           <p className={styles.registerLink}>
-            Don't have an account?
+            Don&apos;t have an account?
             <Link href="/signup">
               Sign up
             </Link>
