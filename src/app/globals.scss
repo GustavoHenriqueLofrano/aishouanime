@@ -1,32 +1,29 @@
-
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: var(--font-federo);
-    outline: none;
-  }
-  
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-federo);
+  outline: none;
+}
+
 :root {
-    --color1-light: #DDFFF7;
-    --color2-light: #93E1D8;
-    --color3-light: #FFA69E;
-    --color4-dark: #AA4464;
-    --color5-dark: #861657;
+  --color1-light: #DDFFF7;
+  --color2-light: #93E1D8;
+  --color3-light: #FFA69E;
+  --color4-dark: #AA4464;
+  --color5-dark: #861657;
 }
 
 button{
-    cursor: pointer;
+  cursor: pointer;
 }
 @media (max-width: 720px){
-    html{
-      font-size: 87.5%; 
-    }
+  html{
+    font-size: 87.5%; 
   }
-  
-  @media (max-width: 1080px){
-    html{
-      font-size: 93.75%; 
-    }
+}
+@media (max-width: 1080px){
+  html{
+    font-size: 93.75%; 
   }
+}
