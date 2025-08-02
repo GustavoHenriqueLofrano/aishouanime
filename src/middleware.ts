@@ -46,8 +46,6 @@ export default async function Middleware(req: NextRequest){
 }
 
 
-
-
 async function validateToken(token: string) {
     if(!token) return false;
     
