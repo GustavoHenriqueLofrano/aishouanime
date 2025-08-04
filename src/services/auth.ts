@@ -6,15 +6,15 @@ import { api } from './api';
 
 export async function login(user: string, password: string) {
   try {
-    if (!user?.trim() || !password?.trim()) {
+    if (!user || !password) {
       throw new Error('User and password are required');
     }
 
     console.log('Attempting login with user:', user);
     
     const response = await api.post('/auth', { 
-      user: user.trim(),
-      password: password.trim()
+      user: user,
+      password: password
     });
     
     if (!response.data?.token) {
@@ -31,7 +31,7 @@ export async function login(user: string, password: string) {
     (await cookieStore).set({
       name: 'session',
       value: response.data.token,
-      httpOnly: true, // More secure
+      httpOnly: false, 
       secure: isProduction, // Only send over HTTPS in production
       sameSite: 'lax', // Helps with CSRF protection
       path: '/',
@@ -48,20 +48,17 @@ export async function login(user: string, password: string) {
       stack: error.stack
     });
     
-    // Handle different types of errors
+  
     if (error.response) {
-      // The request was made and the server responded with a status code
       if (error.response.status === 401) {
         throw new Error('Invalid username or password');
       } else if (error.response.status >= 500) {
         throw new Error('Server error. Please try again later.');
       }
-    } else if (error.request) {
-      // The request was made but no response was received
+    } if (error.request) {
       throw new Error('No response from server. Please check your connection.');
     }
     
-    // Something happened in setting up the request
     throw new Error(error.message || 'An error occurred during login');
   }
 }

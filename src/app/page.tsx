@@ -1,13 +1,14 @@
 "use client"
 
 import 'react-toastify/dist/ReactToastify.css';
-import { login } from '../services/auth';
+import { api } from '../services/api';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 import styles from './page.module.scss';
 import LogoImg from '../../public/logoAA.png';
 import Link from 'next/link';
 import { useState } from 'react';
+import { cookies } from 'next/headers';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,27 +19,35 @@ export default function LoginPage() {
     const user = formData.get('user') as string;
     const password = formData.get('password') as string; 
     
-    if (!user?.trim() || !password?.trim()) {
+    if (!user || !password) {
       toast.error('User and password are required', {
         autoClose: 1000,
       });
       return;
     }
 
-    setIsLoading(true);
+    try{
+      const response = await api.post('/auth', { user, password })
+        if(!response.data.token){
+          toast.error('User or password invalid', {
+            autoClose: 1000,
+          });
+          return;
+        }
+        (await cookies()).set('session', response.data.token, {
+          httpOnly: false,
+          secure: process.env.NODE_ENV === 'production',
+          maxAge: 60 * 60 * 24 * 7,
+          path: '/',
+        });
 
-    try {
-      await login(user, password);
-      // Redirect on successful login
-      window.location.href = '/home';
-    } catch (error: any) {
+        window.location.href = '/home'
+
+    } catch (error) {
       console.error('Login error:', error);
-      // Show error message from the API or a default one
-      toast.error(error.message || 'Failed to login. Please try again.', {
+      toast.error('An error occurred during login', {
         autoClose: 1000,
       });
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -59,7 +68,6 @@ export default function LoginPage() {
               type="text"
               id="user"
               required
-              disabled={isLoading}
             />
           </div>
           <div className={styles.formGroup}>
@@ -69,11 +77,10 @@ export default function LoginPage() {
               type="password"
               id="password"
               required
-              disabled={isLoading}
             />
           </div>
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Logging in...' : 'Login'}
+          <button type="submit">
+            Login
           </button>
           <p className={styles.registerLink}>
             Don&apos;t have an account?{' '}
