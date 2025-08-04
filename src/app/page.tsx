@@ -1,4 +1,4 @@
-"use client"
+"use server"
 
 import 'react-toastify/dist/ReactToastify.css';
 import { api } from '../services/api';
@@ -7,11 +7,10 @@ import Image from 'next/image';
 import styles from './page.module.scss';
 import LogoImg from '../../public/logoAA.png';
 import Link from 'next/link';
-import { useState } from 'react';
 import { cookies } from 'next/headers';
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false);
+
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // Prevent default form submission
