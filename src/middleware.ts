@@ -29,7 +29,7 @@ export default async function Middleware(req: NextRequest){
         }
         return NextResponse.next()
     }
-    if(pathname.startsWith("/")){
+    if(pathname.startsWith("/") && pathname.endsWith("/")){
         if(token){
             return NextResponse.redirect(new URL("/home", req.url))
         }
