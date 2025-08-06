@@ -48,7 +48,7 @@ export default function SignupPage() {
     <main className={styles.container}>
       <section className={styles.SignupPage}>
         <Link href="/" className={styles.LinkLogin}>
-          <i className="bi bi-caret-left-fill"></i>
+          
         </Link>
         <Image
           src={LogoImg}

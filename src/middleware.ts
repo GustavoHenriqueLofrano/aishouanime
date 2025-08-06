@@ -4,45 +4,32 @@ import { api } from "./services/api"
 
 export default async function Middleware(req: NextRequest){
     const { pathname }   = req.nextUrl
-    const token = await getCookieServer()
     
-    if (
-        pathname === "/" || 
-        pathname.startsWith("/_next") || 
-        pathname.startsWith("/images") ||
-        pathname.endsWith('.jpg') || 
-        pathname.endsWith('.jpeg') ||
-        pathname.endsWith('.png') ||
-        pathname.endsWith('.css')
+    if (pathname.startsWith("/_next")
+        || pathname === "/" 
+        || pathname === "/signup"
+        || pathname === "/login"
+        || pathname === '/api/'
+        || pathname.includes('.')
     ) {
         return NextResponse.next();
     }
+
+    const token = await getCookieServer()
     
-    if (pathname.startsWith("/_next") || pathname === "/" || pathname === "/signup") {
-        return NextResponse.next();
-    }
     if(pathname.startsWith("/home")){
         if(!token){
-            return NextResponse.redirect(new URL("/", req.url))
+            return NextResponse.redirect(new URL("/login", req.url))
         }
-        if(token){
+        else if(token){
             const isValid = await validateToken(token)
             if(!isValid){
-                return NextResponse.redirect(new URL("/", req.url))
+                return NextResponse.redirect(new URL("/login", req.url))
 
             }
         }
         return NextResponse.next()
     }
-    if(!token){
-        return NextResponse.redirect(new URL("/", req.url))
-    }
-
-    const isValid = await validateToken(token)
-    if(!isValid){
-        return NextResponse.redirect(new URL("/", req.url))
-    }
-    return NextResponse.next()
 }
 
 
