@@ -33,18 +33,8 @@ export async function login(user: string, password: string) {
     
     return { success: true };
     
-  } catch (error: any) {
-    console.error('Login error details:', {
-      message: error.message,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      responseData: error.response?.data,
-      config: {
-        url: error.config?.url,
-        method: error.config?.method,
-        data: error.config?.data
-      }
-    });
+  } catch (error) {
+    console.error('Login error details:', error);
     throw error;
   }
 }
