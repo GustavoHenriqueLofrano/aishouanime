@@ -6,7 +6,6 @@ export default async function Middleware(req: NextRequest){
     const { pathname }   = req.nextUrl
     
     if (pathname.startsWith("/_next")
-        || pathname === "/" 
         || pathname === "/signup"
         || pathname === "/login"
         || pathname === '/api/'
@@ -30,6 +29,15 @@ export default async function Middleware(req: NextRequest){
         }
         return NextResponse.next()
     }
+    if(pathname.startsWith("/")){
+        if(token){
+            return NextResponse.redirect(new URL("/home", req.url))
+        }
+        else if(!token){
+            return NextResponse.redirect(new URL("/login", req.url))
+        }
+        return NextResponse.next()
+    }
 }
 
 
@@ -43,8 +51,8 @@ async function validateToken(token: string) {
             }
         });
         return true;
-    } catch (error) {
-        console.error('Token validation error:', error);
+    } catch (err) {
+        console.error('Token validation error:', err);
         return false;
     }
 }

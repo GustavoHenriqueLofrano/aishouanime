@@ -53,6 +53,7 @@ export default function LoginPage() {
               name="password"
               type="password"
               id="password"
+              required
             />  
           </div>
           <button 
